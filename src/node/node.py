@@ -23,14 +23,10 @@ class Node:
 
     def set_state(self, newState):
         self.state = newState
-        newColor = self.COLOR_MAPPING.get(newState)
-        self.set_color(newColor)
+        self.color = self.COLOR_MAPPING.get(newState)
 
     def get_state(self):
         return self.state
-
-    def set_color(self, newColor):
-        self.color = newColor
 
     def get_color(self):
         return self.COLOR_MAPPING.get(self.state)
