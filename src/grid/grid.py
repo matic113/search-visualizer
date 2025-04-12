@@ -5,14 +5,14 @@ from node.node import Node
 
 class Grid:
 
-    cellsUpdated = 0
+    cells_updated = 0
 
     def __init__(self, gridWidth, gridHeight, cellSize):
         self.rows = gridHeight // cellSize
         self.cols = gridWidth // cellSize
         self.width = gridWidth
         self.heigt = gridHeight
-        self.cellSize = cellSize
+        self.cell_size = cellSize
         self.cells = list()
 
         for row in range(self.rows):
@@ -20,35 +20,46 @@ class Grid:
             for col in range(0, self.cols):
                 self.cells[row].append(Node(row, col))
 
-        # self.cells[0][0].set_color(pygame.Color("red"))
-        # self.cells[-1][-1].set_color(pygame.Color("red"))
-
     def print(self):
         print(self.cells)
 
-    def updateCell(self, mouseX, mouseY):
+    def update_cell(self, mouseX, mouseY):
 
-        clickedCellCol = mouseX // self.cellSize
-        clickedCellRow = mouseY // self.cellSize
+        clicked_cell_col = mouseX // self.cell_size
+        clicked_cell_row = mouseY // self.cell_size
 
-        clickedCell = self.cells[clickedCellRow][clickedCellCol]
+        clicked_cell = self.cells[clicked_cell_row][clicked_cell_col]
 
-        if clickedCell.get_state() in ["start", "end"]:
+        if clicked_cell.get_state() in ["start", "end"]:
             return
 
-        print(f"updating cell in [{clickedCellRow}, {clickedCellCol}]")
+        print(f"updating cell in [{clicked_cell_row}, {clicked_cell_col}]")
 
-        if self.cellsUpdated == 0:
-            clickedCell.set_state("start")
-        elif self.cellsUpdated == 1:
-            clickedCell.set_state("end")
+        if self.cells_updated == 0:
+            clicked_cell.set_state("start")
+        elif self.cells_updated == 1:
+            clicked_cell.set_state("end")
         else:
-            clickedCell.set_state("obstacle")
+            clicked_cell.set_state("obstacle")
 
-        self.cellsUpdated += 1
+        self.cells_updated += 1
+
+    def get_start_node(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                curr_cell = self.cells[row][col]
+                if curr_cell.state == "start":
+                    return curr_cell
+
+    def get_end_node(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                curr_cell = self.cells[row][col]
+                if curr_cell.state == "end":
+                    return curr_cell
 
     def reset(self):
-        self.cellsUpdated = 0
+        self.cells_updated = 0
         for row in range(self.rows):
             for col in range(self.cols):
                 self.cells[row][col].set_state("unvisited")
