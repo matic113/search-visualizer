@@ -4,7 +4,6 @@ from node.node import Node
 
 
 class Grid:
-
     cells_updated = 0
 
     def __init__(self, gridWidth, gridHeight, cellSize):
@@ -57,6 +56,28 @@ class Grid:
                 curr_cell = self.cells[row][col]
                 if curr_cell.state == "end":
                     return curr_cell
+
+    def get_neighbors(self, node):
+        # search order down, right, left, up
+        potential_neighbors_offsets = [(1, 0), (0, 1), (0, -1), (-1, 0)]
+        neighbors = []
+        for offset in potential_neighbors_offsets:
+            neighbor_row = node.row + offset[0]
+            neighbor_col = node.col + offset[1]
+
+            if not (0 <= neighbor_row < self.rows):
+                continue
+
+            if not (0 <= neighbor_col < self.cols):
+                continue
+
+            neighbor_cell = self.cells[neighbor_row][neighbor_col]
+            if neighbor_cell.state == "obstacle":
+                continue
+
+            neighbors.append(neighbor_cell)
+
+        return neighbors
 
     def reset(self):
         self.cells_updated = 0
