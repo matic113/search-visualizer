@@ -1,14 +1,19 @@
 import pygame
 
+from grid.grid import Grid
+
+# CONSTS
+CELL_SIZE = 40
+PADDING = 20
+
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800 + PADDING, 600 + PADDING))
 pygame.display.set_caption("Search Visualizer")
 clock = pygame.time.Clock()
 running = True
+map = Grid(800, 600, CELL_SIZE)
 dt = 0
-
-player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 
 while running:
     # poll for events
@@ -16,21 +21,34 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            mouse_pos = event.pos
+            mouseX = mouse_pos[0] - (PADDING // 2)
+            mouseY = mouse_pos[1] - (PADDING // 2)
+            print("Left click at:", mouse_pos)
+            map.updateCell(mouseX, mouseY)
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                running = False
+            if event.key == pygame.K_r:
+                map.reset()
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("blue")
+    screen.fill("black")
 
-    pygame.draw.circle(screen, "black", player_pos, 40)
+    # draw grid
+    for row in range(map.rows):
+        for col in range(map.cols):
+            currCell = map.cells[row][col]
+            currRect = pygame.Rect(
+                col * CELL_SIZE + (PADDING / 2),
+                row * CELL_SIZE + (PADDING / 2),
+                CELL_SIZE,
+                CELL_SIZE,
+            )
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        player_pos.y -= 300 * dt
-    if keys[pygame.K_s]:
-        player_pos.y += 300 * dt
-    if keys[pygame.K_a]:
-        player_pos.x -= 300 * dt
-    if keys[pygame.K_d]:
-        player_pos.x += 300 * dt
+            pygame.draw.rect(screen, currCell.color, currRect)
+            pygame.draw.rect(screen, "grey", currRect, 1)
 
     # flip() the display to put your work on screen
     pygame.display.flip()
@@ -38,6 +56,6 @@ while running:
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(30) / 1000
 
 pygame.quit()
