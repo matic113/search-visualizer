@@ -52,13 +52,13 @@ class Dropdown:
             if self.rect.collidepoint(event.pos):
                 self.draw_menu = not self.draw_menu
             elif self.draw_menu:
-                for i, option in enumerate(self.options):
-                    rect = self.rect.copy()
-                    rect.y += (i + 1) * self.rect.height
-                     if rect.collidepoint(event.pos):
-                         self.selected_index = i
-                         self.main = self.options[i]
-                         self.draw_menu = False
+                 for i, option in enumerate(self.options):
+                     rect = self.rect.copy()
+                     rect.y += (i + 1) * self.rect.height
+                      if rect.collidepoint(event.pos):
+                          self.selected_index = i
+                          self.main = self.options[i]
+                          self.draw_menu = False
 
 
 class Slider:
@@ -101,20 +101,20 @@ class Controls:
     def add_dropdown(self, name, x, y, width, height, main, options):
         self.dropdowns[name] = Dropdown(x, y, width, height, main, options)
 
-    def add_slider(self, name, x, y, width, height, min_val, max_val, initial_val):
-        self.sliders[name] = Slider(x, y, width, height, min_val, max_val, initial_val)
+     def add_slider(self, name, x, y, width, height, min_val, max_val, initial_val):
+         self.sliders[name] = Slider(x, y, width, height, min_val, max_val, initial_val)
 
      def draw(self, screen):
-         pygame.draw.rect(screen, (50, 50, 50), self.rect)
-         for button in self.buttons.values():
-             button.draw(screen)
-         for dropdown in self.dropdowns.values():
-             dropdown.draw(screen)
-         for slider in self.sliders.values():
-             slider.draw(screen)
+          pygame.draw.rect(screen, (50, 50, 50), self.rect)
+          for button in self.buttons.values():
+              button.draw(screen)
+          for dropdown in self.dropdowns.values():
+              dropdown.draw(screen)
+          for slider in self.sliders.values():
+              slider.draw(screen)
 
+     def handle_event(self, event):
 
-    def handle_event(self, event):
         for dropdown in self.dropdowns.values():
             dropdown.handle_event(event)
         for slider in self.sliders.values():

@@ -51,7 +51,9 @@ while running:
      for event in pygame.event.get():
          if event.type == pygame.QUIT:
              running = False
-        controls.handle_event(event)
+
+         controls.handle_event(event)
+
 
         if controls.buttons["cancel"].is_clicked(event):
             if searching:
