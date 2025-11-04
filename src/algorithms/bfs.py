@@ -1,11 +1,11 @@
 import pygame
+from collections import deque
 
 def reconstruct_path(came_from, current, draw):
     """
     Reconstructs the path from the end node back to the start node
     and draws it on the grid.
     """
-    # Start from the end node and go backwards
     while current in came_from:
         current = came_from[current]
         if current.get_state() == "start":
@@ -14,23 +14,23 @@ def reconstruct_path(came_from, current, draw):
         draw()
         pygame.time.delay(20)
 
-def dfs(draw, grid, start, end):
+def bfs(draw, grid, start, end):
     """
-    Performs the Depth-First Search algorithm.
+    Performs the Breadth-First Search algorithm.
     Returns True if a path is found, False otherwise.
     """
-    stack = [start]
+    queue = deque([start])
     came_from = {}
     visited = {start}
 
-    while stack:
+    while queue:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 import sys
                 sys.exit()
 
-        current = stack.pop()
+        current = queue.popleft()
 
         if current == end:
             reconstruct_path(came_from, end, draw)
@@ -41,11 +41,11 @@ def dfs(draw, grid, start, end):
         if current != start:
             current.set_state("closed")
 
-        for neighbor in reversed(grid.get_neighbors(current)):
+        for neighbor in grid.get_neighbors(current):
             if neighbor not in visited:
                 visited.add(neighbor)
                 came_from[neighbor] = current
-                stack.append(neighbor)
+                queue.append(neighbor)
                 if neighbor != end:
                     neighbor.set_state("open")
 
