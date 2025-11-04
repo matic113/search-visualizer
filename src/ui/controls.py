@@ -55,10 +55,11 @@ class Dropdown:
                 for i, option in enumerate(self.options):
                     rect = self.rect.copy()
                     rect.y += (i + 1) * self.rect.height
-                    if rect.collidepoint(event.pos):
-                        self.selected_index = i
-                        self.main = self.options[i]
-                        self.draw_menu = False
+                     if rect.collidepoint(event.pos):
+                         self.selected_index = i
+                         self.main = self.options[i]
+                         self.draw_menu = False
+
 
 class Slider:
     def __init__(self, x, y, width, height, min_val, max_val, initial_val):
@@ -103,14 +104,15 @@ class Controls:
     def add_slider(self, name, x, y, width, height, min_val, max_val, initial_val):
         self.sliders[name] = Slider(x, y, width, height, min_val, max_val, initial_val)
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, (50, 50, 50), self.rect)
-        for button in self.buttons.values():
-            button.draw(screen)
-        for dropdown in self.dropdowns.values():
-            dropdown.draw(screen)
-        for slider in self.sliders.values():
-            slider.draw(screen)
+     def draw(self, screen):
+         pygame.draw.rect(screen, (50, 50, 50), self.rect)
+         for button in self.buttons.values():
+             button.draw(screen)
+         for dropdown in self.dropdowns.values():
+             dropdown.draw(screen)
+         for slider in self.sliders.values():
+             slider.draw(screen)
+
 
     def handle_event(self, event):
         for dropdown in self.dropdowns.values():

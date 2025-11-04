@@ -28,44 +28,29 @@ controls.add_slider("speed", 25, 280, 150, 20, 1, 100, 20)
 
 
 def draw():
-    screen.fill("black")
-    # Draw grid on the right side
-    for row in range(grid.rows):
-        for col in range(grid.cols):
-            currCell = grid.cells[row][col]
-            currRect = pygame.Rect(
-                col * CELL_SIZE + (PADDING / 2) + CONTROL_PANEL_WIDTH,
-                row * CELL_SIZE + (PADDING / 2),
-                CELL_SIZE,
-                CELL_SIZE,
-            )
-            pygame.draw.rect(screen, currCell.color, currRect)
-            pygame.draw.rect(screen, "grey", currRect, 1)
-    controls.draw(screen)
-    pygame.display.flip()
+     screen.fill("black")
+     pygame.draw.rect(screen, (50, 50, 50), (0, 0, CONTROL_PANEL_WIDTH, 600 + PADDING))
+     for row in range(grid.rows):
+         for col in range(grid.cols):
+             currCell = grid.cells[row][col]
+             currRect = pygame.Rect(
+                 col * CELL_SIZE + (PADDING / 2) + CONTROL_PANEL_WIDTH,
+                 row * CELL_SIZE + (PADDING / 2),
+                 CELL_SIZE,
+                 CELL_SIZE,
+             )
+             pygame.draw.rect(screen, currCell.color, currRect)
+             pygame.draw.rect(screen, "grey", currRect, 1)
+     controls.draw(screen)
+     pygame.display.flip()
 
-def draw():
-    screen.fill("black")
-    for row in range(grid.rows):
-        for col in range(grid.cols):
-            currCell = grid.cells[row][col]
-            currRect = pygame.Rect(
-                col * CELL_SIZE + (PADDING / 2),
-                row * CELL_SIZE + (PADDING / 2),
-                CELL_SIZE,
-                CELL_SIZE,
-            )
-            pygame.draw.rect(screen, currCell.color, currRect)
-            pygame.draw.rect(screen, "grey", currRect, 1)
-    pygame.display.flip()
 
 while running:
-    draw()
+     draw()
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
+     for event in pygame.event.get():
+         if event.type == pygame.QUIT:
+             running = False
         controls.handle_event(event)
 
         if controls.buttons["cancel"].is_clicked(event):
