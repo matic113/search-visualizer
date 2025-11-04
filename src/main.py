@@ -44,6 +44,21 @@ def draw():
     controls.draw(screen)
     pygame.display.flip()
 
+def draw():
+    screen.fill("black")
+    for row in range(grid.rows):
+        for col in range(grid.cols):
+            currCell = grid.cells[row][col]
+            currRect = pygame.Rect(
+                col * CELL_SIZE + (PADDING / 2),
+                row * CELL_SIZE + (PADDING / 2),
+                CELL_SIZE,
+                CELL_SIZE,
+            )
+            pygame.draw.rect(screen, currCell.color, currRect)
+            pygame.draw.rect(screen, "grey", currRect, 1)
+    pygame.display.flip()
+
 while running:
     draw()
 
