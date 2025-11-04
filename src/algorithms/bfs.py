@@ -1,7 +1,7 @@
 import pygame
 from collections import deque
 
-def reconstruct_path(came_from, current, draw):
+def reconstruct_path(came_from, current, draw, speed):
     """
     Reconstructs the path from the end node back to the start node
     and draws it on the grid.
@@ -12,9 +12,9 @@ def reconstruct_path(came_from, current, draw):
             break
         current.set_state("path")
         draw()
-        pygame.time.delay(20)
+        pygame.time.delay(int(100 / speed))
 
-def bfs(draw, grid, start, end):
+def bfs(draw, grid, start, end, cancel_flag, speed):
     """
     Performs the Breadth-First Search algorithm.
     Returns True if a path is found, False otherwise.
@@ -24,16 +24,13 @@ def bfs(draw, grid, start, end):
     visited = {start}
 
     while queue:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                import sys
-                sys.exit()
+        if cancel_flag[0]:
+            return False
 
         current = queue.popleft()
 
         if current == end:
-            reconstruct_path(came_from, end, draw)
+            reconstruct_path(came_from, end, draw, speed)
             start.set_state("start") # Ensure start/end colors are correct
             end.set_state("end")
             return True
@@ -45,11 +42,17 @@ def bfs(draw, grid, start, end):
             if neighbor not in visited:
                 visited.add(neighbor)
                 came_from[neighbor] = current
+
+                if neighbor == end:
+                    reconstruct_path(came_from, end, draw, speed)
+                    start.set_state("start")
+                    end.set_state("end")
+                    return True
+
                 queue.append(neighbor)
-                if neighbor != end:
-                    neighbor.set_state("open")
+                neighbor.set_state("open")
 
         draw()
-        pygame.time.delay(20)
+        pygame.time.delay(int(100 / speed))
 
     return False
