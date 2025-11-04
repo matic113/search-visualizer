@@ -46,6 +46,7 @@ def draw():
     controls.draw(screen)
     pygame.display.flip()
 
+
 while running:
     draw()
 
